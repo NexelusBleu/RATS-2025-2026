@@ -8,7 +8,7 @@ public class HelloFather extends OpMode {
 
     @Override
     public void init() {
-
+        telemetry.addData("Hello", "Mr.", "Name");
     }
 
     @Override
