@@ -31,7 +31,6 @@ public class BasicControls extends OpMode {
         //Turning inputs into polar form
 
         double BLFR = Math.sin(angle - (double) 1 /4*pi)*r;
-        double BLFR = Math.sin(angle - (double) 1 /4*pi)*r;
         double  BRFL = Math.sin(angle + (double) 1 /4*pi)*r;
         frontLeft.setPower(BRFL);
         backRight.setPower(BRFL);
