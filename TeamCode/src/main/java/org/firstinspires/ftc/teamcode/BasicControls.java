@@ -28,8 +28,8 @@ public class BasicControls extends OpMode {
         double angle = Math.atan2(pad1LY,pad1LX);
         //Turning inputs into polar form
 
-        double BLFR = (Math.sin(angle - (double) 1 /4*pi)*r) + turn;
-        double  BRFL = (Math.sin(angle + (double) 1 /4*pi)*r) + turn;
+        double BLFR = (Math.sin(angle - (double) 1/4*pi)*r) + turn;
+        double  BRFL = (Math.sin(angle + (double) 1/4*pi)*r) + turn;
         if(BLFR<-1 || BLFR>1 || BRFL<-1 || BRFL>1) {
             if(BLFR<-1 || BLFR>1){
                 robot.frontLeft.setPower(-BRFL/Math.abs(BLFR));
