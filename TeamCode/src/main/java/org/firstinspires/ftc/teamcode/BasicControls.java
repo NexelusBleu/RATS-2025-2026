@@ -8,21 +8,18 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 @TeleOp
 public class BasicControls extends OpMode {
 
-    private DcMotor frontLeft = null;
-    private DcMotor backLeft = null;
-    private DcMotor frontRight = null;
-    private DcMotor backRight = null;
+    HardwareClass robot = new HardwareClass();
+
     double pi = Math.PI;
     @Override
     public void init() {
-    frontLeft = hardwareMap.get(DcMotor.class,"frontLeft");
-    backLeft = hardwareMap.get(DcMotor.class, "backLeft");
-    frontRight = hardwareMap.get(DcMotor.class, "frontRight");
-    backRight = hardwareMap.get(DcMotor.class,"backRight");
+        robot.init(hardwareMap);
+
     }
 
     @Override
     public void loop() {
+
         double pad1LY = -gamepad1.left_stick_y;
         double pad1LX = gamepad1.left_stick_x;
         double turn = gamepad1.right_stick_x;
@@ -35,23 +32,23 @@ public class BasicControls extends OpMode {
         double  BRFL = (Math.sin(angle + (double) 1 /4*pi)*r) + turn;
         if(BLFR<-1 || BLFR>1 || BRFL<-1 || BRFL>1) {
             if(BLFR<-1 || BLFR>1){
-                frontLeft.setPower(-BRFL/Math.abs(BLFR));
-                backRight.setPower(BRFL/Math.abs(BLFR));
-                frontRight.setPower(BLFR/Math.abs(BLFR));
-                backLeft.setPower(-BLFR/Math.abs(BLFR));
+                robot.frontLeft.setPower(-BRFL/Math.abs(BLFR));
+                robot.backRight.setPower(BRFL/Math.abs(BLFR));
+                robot.frontRight.setPower(BLFR/Math.abs(BLFR));
+                robot.backLeft.setPower(-BLFR/Math.abs(BLFR));
             } else {
-                frontLeft.setPower(-BRFL/Math.abs(BRFL));
-                backRight.setPower(BRFL/Math.abs(BRFL));
-                frontRight.setPower(BLFR/Math.abs(BRFL));
-                backLeft.setPower(-BLFR/Math.abs(BRFL));
+                robot.frontLeft.setPower(-BRFL/Math.abs(BRFL));
+                robot.backRight.setPower(BRFL/Math.abs(BRFL));
+                robot.frontRight.setPower(BLFR/Math.abs(BRFL));
+                robot.backLeft.setPower(-BLFR/Math.abs(BRFL));
             }
 
 
         }else{
-            frontLeft.setPower(-BRFL);
-            backRight.setPower(BRFL);
-            frontRight.setPower(BLFR);
-            backLeft.setPower(-BLFR);
+            robot.frontLeft.setPower(-BRFL);
+            robot.backRight.setPower(BRFL);
+            robot.frontRight.setPower(BLFR);
+            robot.backLeft.setPower(-BLFR);
         }
     }
 }
