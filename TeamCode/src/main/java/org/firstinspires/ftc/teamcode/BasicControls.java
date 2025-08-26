@@ -20,35 +20,35 @@ public class BasicControls extends OpMode {
     @Override
     public void loop() {
 
-        double pad1LY = -gamepad1.left_stick_y;
-        double pad1LX = gamepad1.left_stick_x;
-        double turn = gamepad1.right_stick_x;
+        double pad1LY = -gamepad1.left_stick_y/4;
+        double pad1LX = gamepad1.left_stick_x/4;
+        double turn = -gamepad1.right_stick_x/2;
 
         double r = Math.sqrt(Math.pow(pad1LX,2) + Math.pow(pad1LY,2));
         double angle = Math.atan2(pad1LY,pad1LX);
         //Turning inputs into polar form
 
-        double BLFR = (Math.sin(angle - (double) 1/4*pi)*r) + turn;
-        double  BRFL = (Math.sin(angle + (double) 1/4*pi)*r) + turn;
+        double BLFR = (Math.sin(angle - (double) 1/4*pi)*r);
+        double  BRFL = (Math.sin(angle + (double) 1/4*pi)*r);
         if(BLFR<-1 || BLFR>1 || BRFL<-1 || BRFL>1) {
             if(BLFR<-1 || BLFR>1){
-                robot.frontLeft.setPower(-BRFL/Math.abs(BLFR));
-                robot.backRight.setPower(BRFL/Math.abs(BLFR));
-                robot.frontRight.setPower(BLFR/Math.abs(BLFR));
-                robot.backLeft.setPower(-BLFR/Math.abs(BLFR));
+                robot.frontLeft.setPower(-BRFL/Math.abs(BLFR+turn));
+                robot.backRight.setPower(BRFL/Math.abs(BLFR+turn));
+                robot.frontRight.setPower(BLFR/Math.abs(BLFR+turn));
+                robot.backLeft.setPower(-BLFR/Math.abs(BLFR+turn));
             } else {
-                robot.frontLeft.setPower(-BRFL/Math.abs(BRFL));
-                robot.backRight.setPower(BRFL/Math.abs(BRFL));
-                robot.frontRight.setPower(BLFR/Math.abs(BRFL));
-                robot.backLeft.setPower(-BLFR/Math.abs(BRFL));
+                robot.frontLeft.setPower(-BRFL/Math.abs(BRFL+turn));
+                robot.backRight.setPower(BRFL/Math.abs(BRFL+turn));
+                robot.frontRight.setPower(BLFR/Math.abs(BRFL+turn));
+                robot.backLeft.setPower(-BLFR/Math.abs(BRFL+turn ));
             }
 
 
         }else{
-            robot.frontLeft.setPower(-BRFL);
-            robot.backRight.setPower(BRFL);
-            robot.frontRight.setPower(BLFR);
-            robot.backLeft.setPower(-BLFR);
+            robot.frontLeft.setPower(-BRFL+turn);
+            robot.backRight.setPower(BRFL+turn);
+            robot.frontRight.setPower(BLFR+turn);
+            robot.backLeft.setPower(-BLFR+turn);
         }
     }
 }
