@@ -2,17 +2,23 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 
 
 @TeleOp
 public class BasicControls extends OpMode {
 
     HardwareClass robot = new HardwareClass();
+    //these can be edited to change the feel of the robot
+    double rampSpeed = .5;
+    double deadZoneR = .15;
+    double turnStrength = 0.5;
+    double strafeStrength = 1.2;
+    double flPower, frPower, blPower, brPower;
 
-    double pi = Math.PI;
     @Override
     public void init() {
+
+        //initializes all the motor and position on brain
         robot.init(hardwareMap);
 
     }
@@ -20,35 +26,36 @@ public class BasicControls extends OpMode {
     @Override
     public void loop() {
 
-        double pad1LY = -gamepad1.left_stick_y/4;
-        double pad1LX = gamepad1.left_stick_x/4;
-        double turn = -gamepad1.right_stick_x/2;
+        //initializing game pads and adding dead-zones to make less is less sensitive
+        double pad1LY = -utiliCode.deadZone(gamepad1.left_stick_y,deadZoneR);
+        double pad1LX = utiliCode.deadZone(gamepad1.left_stick_x, deadZoneR)*strafeStrength;
+        double turn = -utiliCode.deadZone(gamepad1.right_stick_x, deadZoneR)*turnStrength;
 
-        double r = Math.sqrt(Math.pow(pad1LX,2) + Math.pow(pad1LY,2));
-        double angle = Math.atan2(pad1LY,pad1LX);
-        //Turning inputs into polar form
+        //This calculate all the powers for the mecanum wheels
+        double flTarget = pad1LY + pad1LX - turn;
+        double frTarget = pad1LY - pad1LX + turn;
+        double blTarget = pad1LY - pad1LX - turn;
+        double brTarget = pad1LY + pad1LX + turn;
 
-        double BLFR = (Math.sin(angle - (double) 1/4*pi)*r);
-        double  BRFL = (Math.sin(angle + (double) 1/4*pi)*r);
-        if(BLFR<-1 || BLFR>1 || BRFL<-1 || BRFL>1) {
-            if(BLFR<-1 || BLFR>1){
-                robot.frontLeft.setPower(-BRFL/Math.abs(BLFR+turn));
-                robot.backRight.setPower(BRFL/Math.abs(BLFR+turn));
-                robot.frontRight.setPower(BLFR/Math.abs(BLFR+turn));
-                robot.backLeft.setPower(-BLFR/Math.abs(BLFR+turn));
-            } else {
-                robot.frontLeft.setPower(-BRFL/Math.abs(BRFL+turn));
-                robot.backRight.setPower(BRFL/Math.abs(BRFL+turn));
-                robot.frontRight.setPower(BLFR/Math.abs(BRFL+turn));
-                robot.backLeft.setPower(-BLFR/Math.abs(BRFL+turn ));
-            }
+        //normalizes all inputs
+        double max = Math.max(1.0, Math.max(Math.abs(flTarget), Math.max(Math.abs(blTarget),
+                Math.max(Math.abs(frTarget), Math.abs(brTarget)))));
 
+        flPower /= max;
+        frPower /= max;
+        blPower /= max;
+        brPower /= max;
 
-        }else{
-            robot.frontLeft.setPower(-BRFL+turn);
-            robot.backRight.setPower(BRFL+turn);
-            robot.frontRight.setPower(BLFR+turn);
-            robot.backLeft.setPower(-BLFR+turn);
-        }
+        // Ramps up the power to make the controllers more natural and smooth
+        flPower = utiliCode.rampPower(flPower, flTarget, rampSpeed);
+        frPower = utiliCode.rampPower(frPower, frTarget, rampSpeed);
+        blPower = utiliCode.rampPower(blPower, blTarget, rampSpeed);
+        brPower = utiliCode.rampPower(brPower, brTarget, rampSpeed);
+
+        //Set all of the motor
+        robot.frontLeft.setPower(flPower);
+        robot.frontRight.setPower(frPower);
+        robot.backRight.setPower(brPower);
+        robot.backLeft.setPower(blPower);
     }
 }
