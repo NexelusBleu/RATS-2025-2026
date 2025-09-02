@@ -11,7 +11,7 @@ public class BasicControls extends OpMode {
     HardwareClass robot = new HardwareClass();
 
     //these can be edited to change the feel of the robot
-    double rampSpeed = .5;
+    double rampSpeed = .03;
     double deadZoneR = .15;
     double turnStrength = 0.5;
     double strafeStrength = 1.2;
@@ -30,6 +30,8 @@ public class BasicControls extends OpMode {
 
         //finds the angle of the robot
         double robotAngle = robot.getHeading();
+        telemetry.addData("degree", robotAngle);
+        telemetry.update();
 
         //initializing game pads and adding dead-zones to make less is less sensitive
         double pad1LY = -utiliCode.deadZone(gamepad1.left_stick_y,deadZoneR);
@@ -54,7 +56,7 @@ public class BasicControls extends OpMode {
         // Ramps up the power to make the controllers more natural and smooth
         flPower = utiliCode.rampPower(flPower, flTarget, rampSpeed);
         frPower = utiliCode.rampPower(frPower, frTarget, rampSpeed);
-        blPower = utiliCode.rampPower(blPower, blTarget, rampSpeed);
+        blPower = utiliCode.rampPower(blPower, blTarget,  rampSpeed);
         brPower = utiliCode.rampPower(brPower, brTarget, rampSpeed);
 
         //Set all of the motor

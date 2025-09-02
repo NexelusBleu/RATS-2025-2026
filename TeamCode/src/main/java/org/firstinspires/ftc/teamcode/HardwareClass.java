@@ -21,17 +21,24 @@ public class HardwareClass {
 
         frontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
+        frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+
         frontRight = hwMap.get(DcMotorEx.class, "frontRight");
 
         frontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         backLeft = hwMap.get(DcMotorEx.class, "backLeft");
 
+        backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+
         backLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         backRight = hwMap.get(DcMotorEx.class,"backRight");
 
         backRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+
+
 
         //Initalinzings other hardware
 
