@@ -7,7 +7,9 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 @TeleOp
 public class BasicControls extends OpMode {
 
+    //this allows for pulling from the Hardware class
     HardwareClass robot = new HardwareClass();
+
     //these can be edited to change the feel of the robot
     double rampSpeed = .5;
     double deadZoneR = .15;
@@ -25,6 +27,9 @@ public class BasicControls extends OpMode {
 
     @Override
     public void loop() {
+
+        //finds the angle of the robot
+        double robotAngle = robot.getHeading();
 
         //initializing game pads and adding dead-zones to make less is less sensitive
         double pad1LY = -utiliCode.deadZone(gamepad1.left_stick_y,deadZoneR);
