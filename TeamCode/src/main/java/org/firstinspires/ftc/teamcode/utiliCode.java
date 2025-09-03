@@ -27,4 +27,12 @@ public class utiliCode {
 
         return input;
     }
+
+    public static double normalizeWheelBasee(
+            double flTarget, double blTarget, double frTarget, double brTarget){
+
+        double max = Math.max(1.0, Math.max(Math.abs(flTarget), Math.max(Math.abs(blTarget),
+                Math.max(Math.abs(frTarget), Math.abs(brTarget)))));
+        return max;
+    }
 }
